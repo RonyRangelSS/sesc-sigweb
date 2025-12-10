@@ -46,12 +46,14 @@ function Home() {
           items={posts}
           itemRenderer={postRenderer}
           urlPath="posts"
+          href="/posts"
         />
         <Section
           titulo="Empreendimentos"
           items={enterprises}
           itemRenderer={enterpriseRenderer}
           urlPath="empreendimentos"
+          href="/empreendimentos"
         />
       </main>
     </div>

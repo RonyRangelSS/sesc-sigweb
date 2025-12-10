@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { FaChevronLeft } from "react-icons/fa";
 import { RiPencilRuler2Fill } from "react-icons/ri";
 import { TbArrowBackUp } from "react-icons/tb";
 import { FaTrash } from "react-icons/fa6";
@@ -20,7 +19,7 @@ import {
   useMap,
   WMSTileLayer,
 } from "react-leaflet";
-import { NavLink } from "react-router";
+import { BackButton } from "@/components/atoms/common/buttons/BackButton";
 import { LatLngBoundsExpression, Map as LMap } from "leaflet";
 import ActiveLayersSideBar from "@/components/organisms/geo/active-layers/ActiveLayersSideBar";
 import AvailableLayersSideBar from "@/components/organisms/geo/available-layers/AvailableLayersSideBar";
@@ -180,13 +179,8 @@ export default function MapPage() {
   /// Render ///
   return (
     <div className="relative h-full w-screen!" ref={setPageRoot}>
-      <div
-        id="back-button"
-        className="absolute top-2.5 left-2.5 z-500 rounded-full bg-white pr-[0.5px]"
-      >
-        <NavLink to="/">
-          <FaChevronLeft size={32} />
-        </NavLink>
+      <div id="back-button" className="absolute top-2.5 left-2.5 z-500">
+        <BackButton to="/" />
       </div>
 
       <section

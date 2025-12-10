@@ -1,15 +1,11 @@
 import { STRAPI_BASE_URL } from "@/api/Strapi";
 import { usePost } from "@/hooks/usePost";
-import {
-  FaChevronLeft,
-  FaClock,
-  FaMapMarkerAlt,
-  FaWhatsapp,
-} from "react-icons/fa";
+import { FaClock, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import { NavLink, useParams } from "react-router";
 import Pointer from "../../../components/atoms/geo/Pointer";
 import { cn } from "@/utils/style-utils";
-import { PostImage } from "@/types/strapi/Post";
+import { getMainImageUrl } from "@/utils/image-utils";
+import { BackButton } from "@/components/atoms/common/buttons/BackButton";
 
 type InfoCardProps = {
   title: string;
@@ -38,28 +34,6 @@ function SectionCard({
   );
 }
 
-function getMainImageUrl(image: PostImage | undefined): string | undefined {
-  if (!image) return undefined;
-
-  if (image.formats?.medium?.url) {
-    return `${STRAPI_BASE_URL}${image.formats.medium.url}`;
-  }
-  if (image.formats?.large?.url) {
-    return `${STRAPI_BASE_URL}${image.formats.large.url}`;
-  }
-  if (image.formats?.small?.url) {
-    return `${STRAPI_BASE_URL}${image.formats.small.url}`;
-  }
-  if (image.formats?.thumbnail?.url) {
-    return `${STRAPI_BASE_URL}${image.formats.thumbnail.url}`;
-  }
-  if (image.url) {
-    return `${STRAPI_BASE_URL}${image.url}`;
-  }
-
-  return undefined;
-}
-
 export default function PostDetails() {
   const { itemId } = useParams<{ itemId: string }>();
   const { post } = usePost(itemId ?? "");
@@ -73,9 +47,7 @@ export default function PostDetails() {
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen">
       <div className="mt-2 mb-4 flex self-start w-full max-w-2xl">
-        <NavLink to="/">
-          <FaChevronLeft size={32} />
-        </NavLink>
+        <BackButton to="/" />
       </div>
       <div
         className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-2xl shadow-lg mb-6"
