@@ -43,7 +43,7 @@ export default function Section<T>({
           className={cn(
             "scrollbar-hide max-ro m-2 flex min-h-36 snap-x",
             "snap-mandatory gap-4 overflow-x-auto md:grid md:auto-rows-min",
-            "md:grid-cols-3 lg:grid-cols-4 md:gap-6 md:overflow-y-auto"
+            "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-6 md:overflow-y-auto"
           )}
         >
           {items.map((item) => itemRenderer(item))}
