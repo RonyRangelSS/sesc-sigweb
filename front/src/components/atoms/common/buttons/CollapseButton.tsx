@@ -29,7 +29,6 @@ export const CollapseButton = forwardRef<
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("CollapseButton clicked. Current isOpen:", isOpen);
     onClick ? onClick(setIsOpen, e) : setIsOpen((prev) => !prev);
   };
 

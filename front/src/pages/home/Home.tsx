@@ -19,7 +19,7 @@ function Home() {
       descricao={post.descricao}
       textoAlt={post.titulo}
       titulo={post.titulo}
-      img={post.imagem[0]}
+      img={post.imagem[0] || ""}
       tag={{ nome: post.categoria, cor: "#FBB904" }}
     />
   );
@@ -36,8 +36,8 @@ function Home() {
     <div>
       <main>
         <Carrossel imagens={IMAGES} />
-        <Section titulo="Postagens" items={posts} itemRenderer={postRenderer} />
-        <Section titulo="Empreendimentos" items={enterprises} itemRenderer={enterpriseRenderer} />
+        <Section titulo="Postagens" items={posts} itemRenderer={postRenderer} urlPath="posts"/>
+        <Section titulo="Empreendimentos" items={enterprises} itemRenderer={enterpriseRenderer} urlPath="empreendimentos"/>
       </main>
     </div>
   );

@@ -14,14 +14,14 @@ export default function PostsList() {
 			<div className='grid gap-6 md:grid-cols-2'>
 				{posts.map((post) => (
 					<NavLink
-						to={`/posts/${post.id}`}
-						key={post.id}
+						to={`/posts/${post.documentId}`}
+						key={post.documentId}
 						className='block cursor-pointer transition-shadow duration-200 hover:shadow-lg'
 					>
 						<div
 							className='relative flex h-56 flex-col justify-end overflow-hidden rounded-2xl shadow-md'
 							style={{
-								backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.432) 53.15%, rgba(0,0,0,0.664) 68.84%, rgba(0,0,0,0.8) 85.75%), url(${post.imagem?.[0]?.url})`,
+								backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.432) 53.15%, rgba(0,0,0,0.664) 68.84%, rgba(0,0,0,0.8) 85.75%), url(${post.imagem?.[0]?.url || ""})`,
 								backgroundSize: 'cover',
 								backgroundPosition: 'center',
 							}}

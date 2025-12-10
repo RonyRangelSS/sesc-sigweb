@@ -13,6 +13,7 @@ export type SectionItemProps = {
 	};
 	textoAlt: string;
 	tag?: Tag;
+	urlPath: string
 };
 
 export default function SectionItem({
@@ -22,13 +23,13 @@ export default function SectionItem({
 	img,
 	textoAlt,
 	tag,
+	urlPath
 }: SectionItemProps) {
-	console.log(`${STRAPI_BASE_URL}${img.formats?.thumbnail?.url ?? img.url}`);
-
+	
 	return (
 		<div className='no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth [-webkit-overflow-scrolling:touch]'>
 			<NavLink
-				to={`posts/${id}`}
+				to={`${urlPath}/${id}`}
 				draggable={false}
 				className='relative h-72 w-60 shrink-0 snap-center overflow-hidden rounded-2xl border border-gray-300 bg-white p-4 shadow-md'
 			>

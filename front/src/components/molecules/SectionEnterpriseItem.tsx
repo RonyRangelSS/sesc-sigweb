@@ -7,10 +7,10 @@ type SectionEnterpriseItemProps = {
 };
 
 export default function SectionEnterpriseItem({ enterprise }: SectionEnterpriseItemProps) {
-  const firstImage = Array.isArray(enterprise.imagem)
-    ? enterprise.imagem[0]
-    : null;
-
+  let firstImage = null;
+  if (Array.isArray(enterprise.imagem) && enterprise.imagem.length > 0) {
+    firstImage = enterprise.imagem[0];
+  }
   const imageUrl = firstImage?.formats?.medium?.url
     ? `${STRAPI_BASE_URL}${firstImage.formats.medium.url}`
     : firstImage?.url
