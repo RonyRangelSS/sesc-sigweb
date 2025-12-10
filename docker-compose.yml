@@ -75,6 +75,31 @@ services:
     depends_on:
       - strapi
 
+  geoserver:
+    container_name: hubsesc-geoserver
+    build:
+      context: ./geoserver
+      dockerfile: ./Dockerfile
+    depends_on: [geoserverDB]
+    ports: ["8081:8080", "2222:2222"]
+    environment:
+      CORS_ENABLED: "true"
+      CORS_ALLOWED_ORIGINS: "*"
+      CORS_ALLOWED_METHODS: "GET,POST,PUT,DELETE,HEAD,OPTIONS"
+      CORS_ALLOWED_HEADERS: "*"
+    volumes:
+      - ./geoserver/docker-volumes/geoserver:/opt/geoserver_data
+  geoserverDB:
+    container_name: hubsesc-db
+    image: postgis/postgis:16-3.5
+    environment:
+      POSTGRES_DB: hubsesc
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+    ports: ["5433:5433"]
+    volumes:
+      - ./geoserver/docker-volumes/database:/var/lib/postgresql/data  
+
 volumes:
   strapi-data:
 
