@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import Post from "../types/strapi/Post";
 import { getPost, getPosts } from "../api/Strapi";
+import { Post } from "@/types/strapi/Post";
 
 export function usePosts() {
   const [posts, setPosts] = useState<Post[]>([]);

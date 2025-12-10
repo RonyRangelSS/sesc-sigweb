@@ -1,16 +1,16 @@
 // models/post.ts
 
 export interface ImageFormatItem {
-  ext?: string | null;          
-  url?: string;                 
+  ext?: string | null;
+  url?: string;
   hash?: string;
-  mime?: string;                
-  name?: string;                
+  mime?: string;
+  name?: string;
   path?: string | null;
-  size?: number;                
+  size?: number;
   width?: number;
   height?: number;
-  sizeInBytes?: number;         
+  sizeInBytes?: number;
 }
 
 export interface ImageFormats {
@@ -33,29 +33,29 @@ export interface PostImage {
   hash?: string;
   ext?: string | null;
   mime?: string | null;
-  size?: number;                 
+  size?: number;
   url?: string;
   previewUrl?: string | null;
   provider?: string | null;
   provider_metadata?: any | null;
-  createdAt?: string;            
-  updatedAt?: string;            
-  publishedAt?: string;          
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
 }
 
 export interface Post {
   id: number;
-  documentId?: string;
-  titulo?: string;
-  endereco?: string;
-  observacao?: string;
-  minibio?: string;
-  descricaoServicos?: string;
-  redesSociais?: string;
-  empreendedor?: string;
-  createdAt?: string;            
-  updatedAt?: string;
-  publishedAt?: string;
-  imagem?: PostImage[];          
+  documentId: string;
+  titulo: string;
+  endereco: string;
+  observacao: string;
+  minibio: string;
+  descricaoServicos: string;
+  redesSociais: string;
+  empreendedor: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  imagem: PostImage[];
   [key: string]: any;
 }
