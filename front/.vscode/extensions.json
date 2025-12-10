@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "gruntfuggly.todo-tree",
+        "eamodio.gitlens",
+        "wallabyjs.console-ninja",
+        "ms-azuretools.vscode-containers"
+    ]
+}
