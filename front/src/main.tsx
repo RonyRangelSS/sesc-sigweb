@@ -9,6 +9,7 @@ import MainLayout from './MainLayout.tsx';
 import PostDetails from './pages/posts/details/PostDetails.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import PostsList from './pages/posts/Posts.tsx';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,10 @@ createRoot(document.getElementById('root')!).render(
 						<Route
 							path='/posts/:itemId'
 							element={<PostDetails />}
+						/>
+							<Route
+							path='/posts'
+							element={<PostsList />}
 						/>
 					</Route>
 					<Route
