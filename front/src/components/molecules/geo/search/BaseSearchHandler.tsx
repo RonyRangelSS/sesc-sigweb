@@ -68,20 +68,21 @@ export default function BaseSearchHandler({
     setMarkerPosition,
     fitBoundsOptions
   );
+  useCursorManagement(map, isFetching);
 
   /// Render ///
-  if (isFetching || !featuresInfo) return null;
-
   return (
     <>
-      <GeoJSON
-        key={getFetchedFeaturesId(featuresInfo)}
-        ref={geoJsonLayerRef}
-        data={featureCollection(processedFeatures)}
-        style={{
-          color: "#56ee04",
-        }}
-      />
+      {featuresInfo && processedFeatures.length > 0 && (
+        <GeoJSON
+          key={getFetchedFeaturesId(featuresInfo)}
+          ref={geoJsonLayerRef}
+          data={featureCollection(processedFeatures)}
+          style={{
+            color: "#56ee04",
+          }}
+        />
+      )}
       {markerPosition && (
         <RMarker
           key={`${markerPosition.lat}-${markerPosition.lng}`}
@@ -125,6 +126,23 @@ function useMapClickHandler(
       activateClickHandler(false);
     };
   }, [map, onMapClick, setMarkerPosition]);
+}
+
+function useCursorManagement(map: LMap, isFetching: boolean) {
+  useEffect(() => {
+    const container = map.getContainer();
+    if (!container) return;
+
+    if (isFetching) {
+      container.style.cursor = "wait";
+    } else {
+      container.style.cursor = "";
+    }
+
+    return () => {
+      container.style.cursor = "";
+    };
+  }, [map, isFetching]);
 }
 
 function useFitBounds(
