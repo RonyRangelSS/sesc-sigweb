@@ -4,7 +4,8 @@
   "info": {
     "singularName": "empreendimento",
     "pluralName": "empreendimentos",
-    "displayName": "empreendimento"
+    "displayName": "empreendimento",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -41,18 +42,23 @@
     "pais": {
       "type": "string"
     },
-    "localizacao": {
-      "type": "string"
-    },
     "imagem": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "localizacao": {
+      "type": "customField",
+      "options": {
+        "info": true
+      },
+      "customField": "plugin::geodata.geojson"
     }
   }
 }

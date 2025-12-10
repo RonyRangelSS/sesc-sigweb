@@ -373,6 +373,7 @@ export interface ApiEmpreendimentoEmpreendimento
   extends Struct.CollectionTypeSchema {
   collectionName: 'empreendimentos';
   info: {
+    description: '';
     displayName: 'empreendimento';
     pluralName: 'empreendimentos';
     singularName: 'empreendimento';
@@ -394,7 +395,13 @@ export interface ApiEmpreendimentoEmpreendimento
       true
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizacao: Schema.Attribute.String;
+    localizacao: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<
+        'plugin::geodata.geojson',
+        {
+          info: true;
+        }
+      >;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::empreendimento.empreendimento'
@@ -415,6 +422,7 @@ export interface ApiEmpreendimentoEmpreendimento
 export interface ApiPostPost extends Struct.CollectionTypeSchema {
   collectionName: 'posts';
   info: {
+    description: '';
     displayName: 'post';
     pluralName: 'posts';
     singularName: 'post';
@@ -423,29 +431,23 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    categoria: Schema.Attribute.String;
-    contato: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    descricao: Schema.Attribute.Text;
+    descricaoServicos: Schema.Attribute.Text;
+    empreendedor: Schema.Attribute.Text;
     endereco: Schema.Attribute.String;
-    horario: Schema.Attribute.Time;
     imagem: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
-    local: Schema.Attribute.JSON &
-      Schema.Attribute.CustomField<
-        'plugin::geodata.geojson',
-        {
-          info: true;
-        }
-      >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
       Schema.Attribute.Private;
+    minibio: Schema.Attribute.Text;
+    observacao: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
+    redesSociais: Schema.Attribute.Text;
     titulo: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
