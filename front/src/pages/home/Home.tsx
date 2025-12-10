@@ -14,7 +14,7 @@ function Home() {
 
   const postRenderer = (post: Post) => (
     <SectionPostItem
-      documentId={post.documentId}
+      id={post.id.toString()}
       key={post.id}
       descricao={post.descricao}
       textoAlt={post.titulo}

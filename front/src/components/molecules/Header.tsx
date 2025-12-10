@@ -8,7 +8,6 @@ export default function Header() {
       <NavLink to="/" className="flex items-center gap-2">
         <img src={logoSESC} alt="Logomarca do SESC" />
       </NavLink>
-      <FaSearch color="white" size={24} className="hover:cursor-pointer" />
     </header>
   );
 }
