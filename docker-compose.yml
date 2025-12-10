@@ -1,0 +1,84 @@
+version: "3"
+services:
+  strapi:
+    container_name: strapi
+    build:
+      context: ./strapi
+      dockerfile: ./Dockerfile
+    image: strapi-custom:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: strapiDB
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./strapi/config:/opt/app/config
+      - ./strapi/src:/opt/app/src
+      - ./strapi/public/uploads:/opt/app/public/uploads
+      - ./strapi/package.json:/opt/package.json
+      - ./strapi/yarn.lock:/opt/yarn.lock
+      - ./strapi/.env:/opt/app/.env
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
+
+  strapiDB:
+    container_name: strapiDB
+    restart: unless-stopped
+    env_file: .env
+    image: postgres:17.0-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/
+      - ./strapi/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+
+    ports:
+      - "5432:5432"
+    networks:
+      - strapi
+  front:
+    container_name: front
+    build:
+      context: ./front
+      dockerfile: ./Dockerfile
+    image: front-custom:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      VITE_GEOSERVER_OWS_URL: ${VITE_GEOSERVER_OWS_URL}
+      VITE_STRAPI_API_URL: ${VITE_STRAPI_API_URL}
+    volumes:
+      #- ./front/src:/usr/src/app/src
+      #- ./front/public:/usr/src/app/public
+      #- ./front/package.json:/usr/src/app/package.json
+      #- ./front/yarn.lock:/usr/src/app/yarn.lock
+      - ./front/.env:/usr/src/app/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - strapi
+    depends_on:
+      - strapi
+
+volumes:
+  strapi-data:
+
+networks:
+  strapi:
+    name: strapi
+    driver: bridge

@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.leaflet-control-zoom {
+  @apply mt-12!;
+}
