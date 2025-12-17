@@ -24,6 +24,7 @@ export type BaseSearchHandlerProps = {
   fitBoundsOptions?: {
     updateMarkerFromPointFeature?: boolean;
   };
+  useMarkerPopup?: boolean;
 };
 
 export default function BaseSearchHandler({
@@ -33,6 +34,7 @@ export default function BaseSearchHandler({
   onMapClick,
   renderAdditionalLayers,
   fitBoundsOptions,
+  useMarkerPopup = false,
 }: BaseSearchHandlerProps) {
   const map = useMap();
 
@@ -89,9 +91,9 @@ export default function BaseSearchHandler({
           key={`${markerPosition.lat}-${markerPosition.lng}`}
           position={[markerPosition.lat, markerPosition.lng]}
         >
-        {featuresInfo && featuresInfo.length > 0 && <Popup >
-          <FeaturePopup fetchedFeatures={featuresInfo}/>
-        </Popup>}
+          {useMarkerPopup && featuresInfo && featuresInfo.length > 0 && (
+            <FeaturePopup fetchedFeatures={featuresInfo} />
+          )}
         </RMarker>
       )}
       {renderAdditionalLayers?.(markerPosition)}

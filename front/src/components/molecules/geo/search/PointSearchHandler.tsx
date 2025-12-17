@@ -57,6 +57,7 @@ export default function PointSearchHandler() {
       fitBoundsOptions={{
         updateMarkerFromPointFeature: true,
       }}
+      useMarkerPopup={true}
     />
   );
 }
