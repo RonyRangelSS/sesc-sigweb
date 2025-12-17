@@ -33,5 +33,7 @@
   ],
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "editor.indentSize": 2,
+  "editor.detectIndentation": false,
 }

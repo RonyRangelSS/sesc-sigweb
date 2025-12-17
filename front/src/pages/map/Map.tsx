@@ -67,7 +67,7 @@ function ActiveLayersResolver() {
         layers={`${layer.namespace}:${layer.name}`}
         format="image/png"
         transparent={true}
-        opacity={0.5}
+        opacity={0.6}
         attribution={layer.attribution}
         key={index}
       />

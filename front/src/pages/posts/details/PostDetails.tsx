@@ -45,7 +45,11 @@ export default function PostDetails() {
   const imageUrl = getMainImageUrl(mainImage);
 
   return (
-    <div className="flex flex-col items-center bg-gray-50 min-h-screen">
+    <div
+      className={cn(
+        "flex flex-col items-center bg-gray-50 p-2 overflow-y-auto flex-1"
+      )}
+    >
       <div className="mt-2 mb-4 flex self-start w-full max-w-2xl">
         <BackButton to="/" />
       </div>

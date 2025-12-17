@@ -9,7 +9,7 @@ import { Enterprise } from "@/types/strapi/Enterprise";
 import { Post } from "@/types/strapi/Post";
 
 function Home() {
-  const { posts } = usePosts();
+  const { data: posts } = usePosts();
   const { data: enterprises } = useEnterprises();
 
   const postRenderer = (post: Post) => (
@@ -38,21 +38,19 @@ function Home() {
   );
 
   return (
-    <div>
-      <main>
+    <div id="home-page" className="h-full overflow-y-auto flex flex-col">
+      <main className="flex flex-col gap-2">
         <Carrossel imagens={IMAGES} />
         <Section
           titulo="Postagens"
           items={posts}
           itemRenderer={postRenderer}
-          urlPath="posts"
           href="/posts"
         />
         <Section
           titulo="Empreendimentos"
           items={enterprises}
           itemRenderer={enterpriseRenderer}
-          urlPath="empreendimentos"
           href="/empreendimentos"
         />
       </main>

@@ -2,6 +2,8 @@ import { NavLink } from "react-router";
 import { Post } from "@/types/strapi/Post";
 import { getMainImageUrl } from "@/utils/image-utils";
 import { cn } from "@/utils/style-utils";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type LargePostCardProps = {
   post: Post;
@@ -53,5 +55,33 @@ export default function LargePostCard({ post }: LargePostCardProps) {
         {post.endereco && <span>{post.endereco}</span>}
       </div>
     </NavLink>
+  );
+}
+
+export function LargePostCardSkeleton() {
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-2xl border border-gray-300",
+        "bg-white p-4 shadow-md"
+      )}
+    >
+      <div className="relative h-64 w-full overflow-hidden rounded-t-2xl shadow mb-4">
+        <Skeleton height="100%" className="rounded-t-2xl" />
+      </div>
+
+      <div className="mb-2">
+        <Skeleton height={24} className="mb-1" />
+        <Skeleton height={24} width="80%" />
+      </div>
+
+      <div className="mb-3">
+        <Skeleton height={16} className="mb-1" />
+        <Skeleton height={16} className="mb-1" />
+        <Skeleton height={16} width="70%" />
+      </div>
+
+      <Skeleton height={14} width="60%" />
+    </div>
   );
 }
