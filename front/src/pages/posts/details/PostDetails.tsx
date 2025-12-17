@@ -53,8 +53,9 @@ export default function PostDetails() {
       <div className="mt-2 mb-4 flex self-start w-full max-w-2xl">
         <BackButton to="/" />
       </div>
+
       <div
-        className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-2xl shadow-lg mb-6"
+        className="max-w-2xl w-full h-fit rounded-2xl shadow-lg mb-6"
         style={{
           backgroundImage: imageUrl
             ? `linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0.432) 53.15%, rgba(0, 0, 0, 0.664) 68.84%, rgba(0, 0, 0, 0.8) 85.75%), url(${imageUrl})`
@@ -64,13 +65,18 @@ export default function PostDetails() {
         }}
       >
         <div className="flex h-72 items-end">
-          <h3 className="w-full bg-gradient-to-t from-black/80 to-transparent px-4 py-4 text-center text-2xl font-bold text-white rounded-b-2xl">
+          <h3
+            className={cn(
+              "w-full bg-linear-to-t from-black/80 to-transparent p-4",
+              "text-center text-2xl font-bold text-white rounded-b-2xl"
+            )}
+          >
             {post?.titulo}
           </h3>
         </div>
       </div>
 
-      <div className="w-full max-w-2xl px-4 flex flex-col gap-6">
+      <div className="w-full max-w-2xl flex flex-col gap-6">
         {post?.minibio && (
           <SectionCard title="Mini Bio" content={post.minibio} />
         )}

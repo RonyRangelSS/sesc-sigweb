@@ -15,3 +15,6 @@ export function getColorFromTipo(tipo: string): string {
 }
 
 
+
+
+
