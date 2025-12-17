@@ -7,12 +7,13 @@ import {
   Map as LMap,
 } from "leaflet";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
-import { useMap, GeoJSON } from "react-leaflet";
+import { useMap, GeoJSON, Popup } from "react-leaflet";
 import { Marker as RMarker } from "react-leaflet/Marker";
 import { Feature, Point } from "geojson";
 import { getFetchedFeaturesId } from "@/components/atoms/geo/feature-info-display/featureSearchAux";
 import * as R from "remeda";
 import { FetchedFeatureInfo } from "@/types/geo/FetchedFeatureInfo";
+import FeaturePopup from "@/components/atoms/geo/feature-info-display/FeaturePopup";
 
 export type BaseSearchHandlerProps = {
   featureStrategy: "all" | "first";
@@ -87,7 +88,11 @@ export default function BaseSearchHandler({
         <RMarker
           key={`${markerPosition.lat}-${markerPosition.lng}`}
           position={[markerPosition.lat, markerPosition.lng]}
-        />
+        >
+        {featuresInfo && featuresInfo.length > 0 && <Popup >
+          <FeaturePopup fetchedFeatures={featuresInfo}/>
+        </Popup>}
+        </RMarker>
       )}
       {renderAdditionalLayers?.(markerPosition)}
     </>

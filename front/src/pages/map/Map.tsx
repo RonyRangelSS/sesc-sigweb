@@ -250,7 +250,7 @@ export default function MapPage() {
 
         {isMeasuring && <Measurer pathState={[path, setPath]} />}
 
-        {latParam && lngParam && (
+        {latParam && lngParam && !isBufferActive && (
           <Marker
             position={[parseFloat(latParam), parseFloat(lngParam)]}
             ref={markerRef}
