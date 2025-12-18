@@ -13,8 +13,3 @@ export function getColorFromTipo(tipo: string): string {
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
-
-
-
-
-
