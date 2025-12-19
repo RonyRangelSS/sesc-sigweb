@@ -1,5 +1,6 @@
 import ActiveLayerInfo from "@/types/geo/ActiveLayerInfo";
-import LayerInfo from "@/types/geo/LayerInfo";
+import { GeoFilter } from "@/types/geo/filters/GeoFilter";
+import LayerInfo, { getLayerId } from "@/types/geo/LayerInfo";
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
@@ -35,7 +36,7 @@ const useActiveLayersStore = create<UseActiveLayersProps>((set, get) => {
   const addLayer = (layer: LayerInfo) => {
     set((state) => {
       const next = new Map(state.layersMap);
-      next.set(`${layer.namespace}:${layer.name}`, { ...layer, hidden: false });
+      next.set(getLayerId(layer), { ...layer, hidden: false, filters: {} });
       return updateLayers(state, next);
     });
   };
@@ -43,20 +44,44 @@ const useActiveLayersStore = create<UseActiveLayersProps>((set, get) => {
   const removeLayer = (layer: LayerInfo) => {
     set((state) => {
       const next = new Map(state.layersMap);
-      next.delete(`${layer.namespace}:${layer.name}`);
+      next.delete(getLayerId(layer));
       return updateLayers(state, next);
     });
   };
 
   const hasLayer = (layer: LayerInfo) => {
-    return get().layersMap.has(`${layer.namespace}:${layer.name}`);
+    return get().layersMap.has(getLayerId(layer));
   };
 
   const hideLayer = (hidden: boolean, layer: ActiveLayerInfo) => {
     set((state) => {
       const next = new Map(state.layersMap);
-      const layerToHide = next.get(`${layer.namespace}:${layer.name}`);
+      const layerToHide = next.get(getLayerId(layer));
       if (layerToHide) layerToHide.hidden = hidden;
+      return updateLayers(state, next);
+    });
+  };
+
+  const addFilter = (
+    layer: ActiveLayerInfo,
+    field: string,
+    filter: GeoFilter
+  ) => {
+    set((state) => {
+      const layerId = getLayerId(layer);
+      const next = new Map(state.layersMap);
+      const layerToUpdate = next.get(layerId);
+      if (layerToUpdate) layerToUpdate.filters[layerId][field] = filter;
+      return updateLayers(state, next);
+    });
+  };
+
+  const removeFilter = (layer: ActiveLayerInfo, field: string) => {
+    set((state) => {
+      const layerId = getLayerId(layer);
+      const next = new Map(state.layersMap);
+      const layerToUpdate = next.get(layerId);
+      if (layerToUpdate) delete layerToUpdate.filters[layerId][field];
       return updateLayers(state, next);
     });
   };
@@ -67,6 +92,8 @@ const useActiveLayersStore = create<UseActiveLayersProps>((set, get) => {
     removeLayer,
     hasLayer,
     hideLayer,
+    addFilter,
+    removeFilter,
   };
 });
 
