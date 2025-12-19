@@ -36,7 +36,8 @@ export const CollapseButton = forwardRef<
     <button ref={ref} onClick={handleClick} className={classNames.button}>
       <MdKeyboardDoubleArrowRight
         className={cn(
-          "transition-transform duration-75 ease-in-out",
+          "transition-transform duration-75 ease-in-out cursor-pointer",
+          "hover:scale-110",
           classNames.icon,
           iconRotations[direction]
         )}

@@ -17,7 +17,6 @@ export const LayersInfoSiderBar = ({
 }: LayersInfoSideBarProps) => {
   const {
     layersInfo: { featuresInfo },
-    isFetching,
   } = useLayersInfo(
     useShallow((state) => ({
       layersInfo: state.layersInfo,
@@ -40,7 +39,7 @@ export const LayersInfoSiderBar = ({
       className={cn(
         "text-base bg-surface-container-darker px-2 py-1 rounded-2xl shadow-sm",
         "font-medium radix-state-active:bg-primary radix-state-active:text-on-primary",
-        "transition-all duration-300"
+        "transition-all duration-300 cursor-pointer hover:scale-105"
       )}
     >
       {title}
@@ -76,6 +75,8 @@ export const LayersInfoSiderBar = ({
       ))}
     </Tabs.Content>
   ));
+
+  if (layersMap.length === 0) return null;
 
   return (
     <SideBar.Root
