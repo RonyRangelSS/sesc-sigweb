@@ -1,8 +1,8 @@
-import useActiveLayersContext from "../../../../stores/active-layers/useActiveLayersContext.ts";
 import ActiveLayerItem from "../../../atoms/geo/active-layers-control/ActiveLayerItem.tsx";
 import { SideBar } from "@/components/organisms/common/side-bar/SideBar.tsx";
 import { ActiveLayersFloatingButton } from "./ActiveLayersFloatingButton.tsx";
 import SideBarHeader from "@/components/molecules/common/side-bar/SideBarHeader.tsx";
+import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers.ts";
 
 type ActiveLayersSideBarProps = {
   container?: Element | DocumentFragment | null;
@@ -13,7 +13,9 @@ export default function ActiveLayersSideBar({
   container,
   position = "right",
 }: ActiveLayersSideBarProps) {
-  const { layers } = useActiveLayersContext();
+  const { layers } = useActiveLayers((select) => ({
+    layers: select.layers,
+  }));
 
   return (
     <SideBar.Root

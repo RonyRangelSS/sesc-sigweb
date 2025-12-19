@@ -26,14 +26,16 @@ import AvailableLayersSideBar from "@/components/organisms/geo/available-layers/
 import Measurer from "@/components/molecules/geo/measurement/Measurer";
 import BufferHandler from "@/components/molecules/geo/search/BufferSearchHandler";
 import PointSearchHandler from "@/components/molecules/geo/search/PointSearchHandler";
-import useActiveLayersContext from "@/stores/active-layers/useActiveLayersContext";
 import ActiveLayerInfo from "@/types/geo/ActiveLayerInfo";
 import { useBufferSettings } from "@/hooks/geo/info-fetchers/buffer/useBufferSettings";
 import { useShallow } from "zustand/react/shallow";
 import { LayersInfoSiderBar } from "@/components/organisms/geo/layers-info/LayersInfoSideBar";
+import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers";
 
 function ActiveLayersResolver() {
-  const { layers } = useActiveLayersContext();
+  const { layers } = useActiveLayers((select) => ({
+    layers: select.layers,
+  }));
   const map = useMap();
 
   useEffect(() => {
