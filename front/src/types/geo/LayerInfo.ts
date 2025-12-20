@@ -2,12 +2,14 @@ import BoundingBox from "./BoundingBox.ts";
 import FeatureInfo from "./FeatureInfo.ts";
 import { layerId } from "./LayerId.ts";
 import { LayerId } from "./LayerId.ts";
+import { LayerMetadata } from "./metadata/LayerMetadata.ts";
 
 export default interface LayerInfo {
   owsURL: string;
   name: string;
   namespace: string;
   title?: string;
+  metadata: LayerMetadata;
   description?: string;
   attribution: string;
   nativeBoundingBox?: BoundingBox;
