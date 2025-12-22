@@ -5,11 +5,15 @@ import { pointGeometry } from "@/utils/geo-utils";
 import { FeatureCollection } from "geojson";
 import { PointSettings } from "./usePointSettings";
 import { useLayersInfoFetcher } from "../useLayersInfoFetcher";
+import { useGeoFilters } from "../../filters/useGeoFilters";
+import { getLayerId } from "@/types/geo/LayerInfo";
 
 export function useLayersInfoPointFetcher(
   pointSettings: PointSettings,
   radius: number
 ) {
+  const { CQLFilterByLayer } = useGeoFilters();
+
   const fetchFn = useMemo(() => {
     if (!pointSettings.origin || radius === 0) {
       return undefined;
@@ -20,9 +24,11 @@ export function useLayersInfoPointFetcher(
         activeLayer,
         pointGeometry(pointSettings.origin!),
         radius,
-        "meters"
+        "meters",
+        5,
+        CQLFilterByLayer[getLayerId(activeLayer)]
       );
-  }, [pointSettings, radius]);
+  }, [pointSettings, radius, CQLFilterByLayer]);
 
   const fetchData = useLayersInfoFetcher(
     [

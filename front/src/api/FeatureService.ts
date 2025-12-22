@@ -66,12 +66,15 @@ export async function fetchFeatures(
 export async function fetchFeaturesIntersects(
   layer: LayerID,
   polygon: Polygon,
+  cqlFilter?: string,
   latLngConversor: LatLngConversor = defaultLatLngConversor
 ): Promise<FeatureCollection> {
   const correctedPolygon = correctPolygon(polygon, latLngConversor);
 
-  const cqlFilter = `INTERSECTS(geom, ${geojsonToWKT(correctedPolygon)})`;
-  const response = await fetch(getWFSGetFeatureURL([layer], cqlFilter));
+  const finalCQLFilter =
+    `INTERSECTS(geom, ${geojsonToWKT(correctedPolygon)})` +
+    `${cqlFilter ? ` AND ${cqlFilter}` : ""}`;
+  const response = await fetch(getWFSGetFeatureURL([layer], finalCQLFilter));
 
   return (await response.json()) as FeatureCollection;
 }
@@ -82,6 +85,7 @@ export async function fetchFeaturesIntersectingBuffer(
   radius: number,
   units: Units = "kilometers",
   steps: number = 5,
+  cqlFilter?: string,
   latLngConversor: LatLngConversor = defaultLatLngConversor
 ): Promise<FeatureCollection> {
   const bufferPolygon = buffer(origin, radius, {
@@ -91,6 +95,7 @@ export async function fetchFeaturesIntersectingBuffer(
   return await fetchFeaturesIntersects(
     layer,
     bufferPolygon.geometry,
+    cqlFilter,
     latLngConversor
   );
 }
@@ -98,12 +103,15 @@ export async function fetchFeaturesIntersectingBuffer(
 export async function fetchFeaturesInPoint(
   layer: LayerID,
   position: Point,
-  latLngConversor: LatLngConversor = defaultLatLngConversor
+  latLngConversor: LatLngConversor = defaultLatLngConversor,
+  cqlFilter?: string
 ): Promise<FeatureCollection> {
   const correctedPoint = correctPoint(position, latLngConversor);
 
-  const cqlFilter = `INTERSECTS(geom, ${geojsonToWKT(correctedPoint)})`;
-  const response = await fetch(getWFSGetFeatureURL([layer], cqlFilter));
+  const finalCQLFilter =
+    `INTERSECTS(geom, ${geojsonToWKT(correctedPoint)})` +
+    `${cqlFilter ? ` AND ${cqlFilter}` : ""}`;
+  const response = await fetch(getWFSGetFeatureURL([layer], finalCQLFilter));
 
   return (await response.json()) as FeatureCollection;
 }

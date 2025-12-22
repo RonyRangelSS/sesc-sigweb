@@ -1,17 +1,17 @@
 import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers";
 import ActiveLayerInfo from "@/types/geo/ActiveLayerInfo";
-import { getCQLFilter } from "@/utils/filter-utils";
 import { LatLngBoundsExpression, WMSParams } from "leaflet";
 import { useEffect } from "react";
 import { useMap, WMSTileLayer } from "react-leaflet";
-import * as R from "remeda";
 import { getLayerId } from "@/types/geo/LayerInfo";
+import { useGeoFilters } from "@/hooks/geo/filters/useGeoFilters";
 
 export const ActiveLayersRenderer = () => {
   const { layers } = useActiveLayers((select) => ({
     layers: select.layers,
   }));
   const map = useMap();
+  const { CQLFilterByLayer } = useGeoFilters();
 
   useEffect(() => {
     // Filtra as camadas visíveis com BBOX válido
@@ -38,17 +38,12 @@ export const ActiveLayersRenderer = () => {
   const createLayer = (layer: ActiveLayerInfo, index: number) => {
     if (!layer || layer.hidden) return null;
 
+    const cqlFilter = CQLFilterByLayer[getLayerId(layer)];
+
     const params: WMSParams & { CQL_FILTER?: string } = {
       layers: getLayerId(layer),
+      CQL_FILTER: cqlFilter,
     };
-
-    const cqlFilter = getCQLFilter(
-      R.values(layer.featureInfo?.filters ?? {}).filter(R.isDefined)
-    );
-
-    if (cqlFilter) {
-      params.CQL_FILTER = cqlFilter;
-    }
 
     return (
       <WMSTileLayer
