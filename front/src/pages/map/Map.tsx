@@ -1,83 +1,22 @@
 import "./Map.css";
 import { Units } from "@turf/helpers";
 import { Position } from "geojson";
-import {
-  ChangeEvent,
-  MouseEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, MouseEventHandler, useRef, useState } from "react";
 import { RiPencilRuler2Fill } from "react-icons/ri";
 import { TbArrowBackUp } from "react-icons/tb";
 import { FaTrash } from "react-icons/fa6";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  WMSTileLayer,
-} from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { BackButton } from "@/components/atoms/common/buttons/BackButton";
-import { LatLngBoundsExpression, Map as LMap } from "leaflet";
+import { Map as LMap } from "leaflet";
 import ActiveLayersSideBar from "@/components/organisms/geo/active-layers/ActiveLayersSideBar";
 import AvailableLayersSideBar from "@/components/organisms/geo/available-layers/AvailableLayersSideBar";
 import Measurer from "@/components/molecules/geo/measurement/Measurer";
 import BufferHandler from "@/components/molecules/geo/search/BufferSearchHandler";
 import PointSearchHandler from "@/components/molecules/geo/search/PointSearchHandler";
-import ActiveLayerInfo from "@/types/geo/ActiveLayerInfo";
 import { useBufferSettings } from "@/hooks/geo/info-fetchers/buffer/useBufferSettings";
 import { useShallow } from "zustand/react/shallow";
 import { LayersInfoSiderBar } from "@/components/organisms/geo/layers-info/LayersInfoSideBar";
-import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers";
-
-function ActiveLayersResolver() {
-  const { layers } = useActiveLayers((select) => ({
-    layers: select.layers,
-  }));
-  const map = useMap();
-
-  useEffect(() => {
-    // Filtra as camadas visíveis com BBOX válido
-    const validBBoxes = layers
-      .filter((layer) => !layer.hidden && layer.latLonBoundingBox)
-      .map((layer) => layer.latLonBoundingBox!);
-
-    if (validBBoxes.length === 0) return;
-
-    // Calcula o BBOX englobando todas as camadas visíveis
-    const south = Math.min(...validBBoxes.map((b) => b.miny));
-    const west = Math.min(...validBBoxes.map((b) => b.minx));
-    const north = Math.max(...validBBoxes.map((b) => b.maxy));
-    const east = Math.max(...validBBoxes.map((b) => b.maxx));
-
-    const bounds: LatLngBoundsExpression = [
-      [south, west],
-      [north, east],
-    ];
-
-    map.fitBounds(bounds, { padding: [20, 20] }); // Adiciona margem
-  }, [layers, map]);
-
-  const createLayer = (layer: ActiveLayerInfo, index: number) => {
-    if (!layer || layer.hidden) return null;
-
-    return (
-      <WMSTileLayer
-        url={layer.owsURL}
-        layers={`${layer.namespace}:${layer.name}`}
-        format="image/png"
-        transparent={true}
-        opacity={0.6}
-        attribution={layer.attribution}
-        key={index}
-      />
-    );
-  };
-
-  return <>{layers.map(createLayer)}</>;
-}
+import { ActiveLayersRenderer } from "@/components/molecules/geo/renderers/ActiveLayersRenderer";
 
 function MeasurementControlIcon({
   active,
@@ -242,12 +181,9 @@ export default function MapPage() {
         zoom={12}
         ref={map}
       >
-        <TileLayer
-          attribution='href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-        />
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
         {!isBufferActive && !isMeasuring && <PointSearchHandler />}
-        <ActiveLayersResolver />
+        <ActiveLayersRenderer />
         {isBufferActive && !isMeasuring && <BufferHandler />}
 
         {isMeasuring && <Measurer pathState={[path, setPath]} />}
