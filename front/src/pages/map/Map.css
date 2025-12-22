@@ -3,3 +3,13 @@
 .leaflet-control-zoom {
   @apply mt-16! ml-4!;
 }
+
+/* Reduz o z-index apenas do container do attribution */
+.leaflet-control-attribution {
+  z-index: 1 !important; /* Ou um valor menor que o do seu componente */
+}
+
+/* Se não funcionar, tente reduzir o container do canto inferior */
+.leaflet-bottom {
+  z-index: 400 !important; /* O padrão costuma ser 1000 */
+}

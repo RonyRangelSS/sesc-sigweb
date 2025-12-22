@@ -1,8 +1,11 @@
 import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers";
 import ActiveLayerInfo from "@/types/geo/ActiveLayerInfo";
-import { LatLngBoundsExpression } from "leaflet";
+import { getCQLFilter } from "@/utils/filter-utils";
+import { LatLngBoundsExpression, WMSParams } from "leaflet";
 import { useEffect } from "react";
 import { useMap, WMSTileLayer } from "react-leaflet";
+import * as R from "remeda";
+import { getLayerId } from "@/types/geo/LayerInfo";
 
 export const ActiveLayersRenderer = () => {
   const { layers } = useActiveLayers((select) => ({
@@ -35,15 +38,28 @@ export const ActiveLayersRenderer = () => {
   const createLayer = (layer: ActiveLayerInfo, index: number) => {
     if (!layer || layer.hidden) return null;
 
+    const params: WMSParams & { CQL_FILTER?: string } = {
+      layers: getLayerId(layer),
+    };
+
+    const cqlFilter = getCQLFilter(
+      R.values(layer.featureInfo?.filters ?? {}).filter(R.isDefined)
+    );
+
+    if (cqlFilter) {
+      params.CQL_FILTER = cqlFilter;
+    }
+
     return (
       <WMSTileLayer
+        key={`${index}:${layer.namespace}:${layer.name}:${cqlFilter || "no-filter"}`}
         url={layer.owsURL}
-        layers={`${layer.namespace}:${layer.name}`}
+        params={params}
+        layers={getLayerId(layer)}
         format="image/png"
         transparent={true}
         opacity={0.6}
         attribution={layer.attribution}
-        key={index}
       />
     );
   };

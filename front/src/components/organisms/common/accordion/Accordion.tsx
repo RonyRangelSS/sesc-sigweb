@@ -17,6 +17,7 @@ export type AccordionSingleProps = AccordionProps & {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  className?: string;
 };
 
 const SingleItemRoot = ({
@@ -27,6 +28,7 @@ const SingleItemRoot = ({
   defaultValue,
   onValueChange,
   disabled = false,
+  className,
 }: AccordionSingleProps) => {
   return (
     <RadixAccordion.Root
@@ -37,6 +39,7 @@ const SingleItemRoot = ({
       orientation={orientation}
       collapsible={collapsible}
       disabled={disabled}
+      className={className}
     >
       {children}
     </RadixAccordion.Root>

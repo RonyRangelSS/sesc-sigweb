@@ -1,6 +1,6 @@
 import { GeoFilter } from "./filters/GeoFilter";
 import { LayerAttributesMetadata } from "./metadata/LayerAttributesMetadata";
-import { LayerId } from "./LayerId";
+import { AttributeType } from "./AttributeType";
 
 export default interface FeatureInfo {
   /**
@@ -10,12 +10,12 @@ export default interface FeatureInfo {
    */
   attributes: Record<
     string,
-    { type: string; metadata: LayerAttributesMetadata }
+    { type: AttributeType; metadata: LayerAttributesMetadata }
   >;
   /**
    * Filters applied to the layer.
    *
    * ```LayerId -> Field -> GeoFilter[]```
    */
-  filters: Record<LayerId, Record<string, GeoFilter>>;
+  filters: Record<string, GeoFilter | undefined>;
 }

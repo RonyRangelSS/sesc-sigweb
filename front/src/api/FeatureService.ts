@@ -21,7 +21,7 @@ function getWFSGetFeatureURL(layers: LayerID[], cqlFilter: string = "") {
     typeNames: layers.map(getLayerID).join(","),
     outputFormat: "application/json",
     CQL_FILTER: cqlFilter,
-    srsName: 'EPSG:4326'
+    srsName: "EPSG:4326",
   });
 
   return `${owsUrl}/ows?${params}`;
@@ -38,14 +38,14 @@ function defaultLatLngConversor(coordinates: Position): Position {
 }
 function correctPolygon(
   polygon: Polygon,
-  latLngConversor: LatLngConversor,
+  latLngConversor: LatLngConversor
 ): Polygon {
   return createPolygon(
     polygon.coordinates.map((line) =>
-      line.map((point) => latLngConversor(point)),
+      line.map((point) => latLngConversor(point))
     ),
     undefined,
-    { bbox: polygon.bbox },
+    { bbox: polygon.bbox }
   ).geometry;
 }
 function correctPoint(point: Point, latLngConversor: LatLngConversor): Point {
@@ -57,7 +57,7 @@ function correctPoint(point: Point, latLngConversor: LatLngConversor): Point {
 // FETCH FUNCTIONS
 export async function fetchFeatures(
   layers: LayerID[],
-  cqlFilter: string,
+  cqlFilter: string
 ): Promise<FeatureCollection> {
   const response = await fetch(getWFSGetFeatureURL(layers, cqlFilter));
   return (await response.json()) as FeatureCollection;
@@ -66,7 +66,7 @@ export async function fetchFeatures(
 export async function fetchFeaturesIntersects(
   layer: LayerID,
   polygon: Polygon,
-  latLngConversor: LatLngConversor = defaultLatLngConversor,
+  latLngConversor: LatLngConversor = defaultLatLngConversor
 ): Promise<FeatureCollection> {
   const correctedPolygon = correctPolygon(polygon, latLngConversor);
 
@@ -82,7 +82,7 @@ export async function fetchFeaturesIntersectingBuffer(
   radius: number,
   units: Units = "kilometers",
   steps: number = 5,
-  latLngConversor: LatLngConversor = defaultLatLngConversor,
+  latLngConversor: LatLngConversor = defaultLatLngConversor
 ): Promise<FeatureCollection> {
   const bufferPolygon = buffer(origin, radius, {
     units,
@@ -91,14 +91,14 @@ export async function fetchFeaturesIntersectingBuffer(
   return await fetchFeaturesIntersects(
     layer,
     bufferPolygon.geometry,
-    latLngConversor,
+    latLngConversor
   );
 }
 
 export async function fetchFeaturesInPoint(
   layer: LayerID,
   position: Point,
-  latLngConversor: LatLngConversor = defaultLatLngConversor,
+  latLngConversor: LatLngConversor = defaultLatLngConversor
 ): Promise<FeatureCollection> {
   const correctedPoint = correctPoint(position, latLngConversor);
 

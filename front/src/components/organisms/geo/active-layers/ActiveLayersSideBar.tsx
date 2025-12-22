@@ -1,8 +1,8 @@
-import ActiveLayerItem from "../../../atoms/geo/active-layers-control/ActiveLayerItem.tsx";
 import { SideBar } from "@/components/organisms/common/side-bar/SideBar.tsx";
 import { ActiveLayersFloatingButton } from "./ActiveLayersFloatingButton.tsx";
 import SideBarHeader from "@/components/molecules/common/side-bar/SideBarHeader.tsx";
 import { useActiveLayers } from "@/hooks/geo/active-layers/useActiveLayers.ts";
+import { ActiveLayersAccordion } from "./ActiveLayersAccordion.tsx";
 
 type ActiveLayersSideBarProps = {
   container?: Element | DocumentFragment | null;
@@ -23,7 +23,7 @@ export default function ActiveLayersSideBar({
       trigger={<ActiveLayersFloatingButton />}
       container={container}
       classNames={{
-        content: "bg-surface-container/80",
+        content: "bg-surface-container/80 flex flex-col",
       }}
     >
       <SideBarHeader
@@ -31,9 +31,10 @@ export default function ActiveLayersSideBar({
         closable={true}
         title="Camadas Selecionadas"
       />
-      {layers.map((layer, index) => (
-        <ActiveLayerItem activeLayer={layer} key={index} />
-      ))}
+      <ActiveLayersAccordion
+        layers={layers}
+        className="flex-1 overflow-y-auto"
+      />
     </SideBar.Root>
   );
 }
