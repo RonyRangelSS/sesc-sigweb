@@ -1,5 +1,5 @@
-import { Require } from "@/utils/type-utils";
 import { GeoFilter } from "./GeoFilter";
+import * as R from "remeda";
 
 export class IntervalGeoFilter<T extends number | Date> extends GeoFilter {
   min?: T;
@@ -8,41 +8,42 @@ export class IntervalGeoFilter<T extends number | Date> extends GeoFilter {
 
   constructor({
     layerId,
-    field,
+    attribute,
     max,
-  }: Omit<IntervalGeoFilter<T>, "toCQLFilter" | "min">);
+  }: Omit<IntervalGeoFilter<T>, "toCQLFilter" | "min" | "type">);
 
   constructor({
     layerId,
-    field,
+    attribute,
     min,
-  }: Omit<IntervalGeoFilter<T>, "toCQLFilter" | "max">);
+  }: Omit<IntervalGeoFilter<T>, "toCQLFilter" | "max" | "type">);
 
   constructor({
     layerId,
-    field,
+    attribute,
     min,
     max,
-  }: Omit<Require<IntervalGeoFilter<T>, "min" | "max">, "toCQLFilter">);
+  }: Omit<IntervalGeoFilter<T>, "toCQLFilter" | "type">);
 
-  constructor({
-    layerId,
-    field,
-    min,
-    max,
-  }: Omit<IntervalGeoFilter<T>, "toCQLFilter">) {
-    super({ layerId, field, type: "Interval" });
+  constructor({ layerId, attribute, min, max }: IntervalGeoFilter<T>) {
+    super({ layerId, attribute, type: "Interval" });
     this.min = min;
     this.max = max;
   }
 
   toCQLFilter(): string {
-    if (this.min && this.max) {
-      return `${this.field} BETWEEN ${this.min} AND ${this.max}`;
-    } else if (this.min) {
-      return `${this.field} >= ${this.min}`;
-    } else if (this.max) {
-      return `${this.field} <= ${this.max}`;
+    const min =
+      this.min instanceof Date ? `'${this.min.toISOString()}'` : this.min;
+
+    const max =
+      this.max instanceof Date ? `'${this.max.toISOString()}'` : this.max;
+
+    if (R.isDefined(this.min) && R.isDefined(this.max)) {
+      return `"${this.attribute}" >= ${min} AND "${this.attribute}" <= ${max}`;
+    } else if (R.isDefined(this.min)) {
+      return `"${this.attribute}" >= ${min}`;
+    } else if (R.isDefined(this.max)) {
+      return `"${this.attribute}" <= ${max}`;
     }
     throw new Error("Either min or max must be provided");
   }

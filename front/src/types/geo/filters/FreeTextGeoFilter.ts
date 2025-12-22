@@ -5,14 +5,14 @@ export class FreeTextGeoFilter extends GeoFilter {
 
   constructor({
     layerId,
-    field,
+    attribute,
     value,
   }: Omit<FreeTextGeoFilter, "toCQLFilter" | "type">) {
-    super({ layerId, field, type: "FreeTextSearch" });
+    super({ layerId, attribute, type: "FreeTextSearch" });
     this.value = value;
   }
 
   toCQLFilter(): string {
-    return `${this.field} ILIKE '%${this.value}%'`;
+    return `${this.attribute} ILIKE '%${this.value}%'`;
   }
 }

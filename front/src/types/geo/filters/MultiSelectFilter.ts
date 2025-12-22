@@ -5,14 +5,14 @@ export class MultiSelectFilter extends GeoFilter {
 
   constructor({
     layerId,
-    field,
+    attribute,
     values,
-  }: Omit<MultiSelectFilter, "toCQLFilter">) {
-    super({ layerId, field, type: "MultiSelect" });
+  }: Omit<MultiSelectFilter, "toCQLFilter" | "type">) {
+    super({ layerId, attribute, type: "MultiSelect" });
     this.values = values;
   }
 
   toCQLFilter(): string {
-    return `${this.field} IN (${this.values.join(",")})`;
+    return `${this.attribute} IN ('${this.values.join("','")}')`;
   }
 }

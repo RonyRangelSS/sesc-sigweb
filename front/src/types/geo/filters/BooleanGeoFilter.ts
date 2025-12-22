@@ -5,14 +5,14 @@ export class BooleanGeoFilter extends GeoFilter {
 
   constructor({
     layerId,
-    field,
+    attribute,
     value,
-  }: Omit<BooleanGeoFilter, "toCQLFilter">) {
-    super({ layerId, field, type: "Boolean" });
+  }: Omit<BooleanGeoFilter, "toCQLFilter" | "type">) {
+    super({ layerId, attribute, type: "Boolean" });
     this.value = value;
   }
 
   toCQLFilter(): string {
-    return `${this.field} = ${this.value}`;
+    return `${this.attribute} = '${this.value}'`;
   }
 }
