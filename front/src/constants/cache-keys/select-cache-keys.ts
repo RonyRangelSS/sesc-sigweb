@@ -1,0 +1,4 @@
+export namespace SelectCacheKeys {
+  export const ASYNC_SINGLE_SELECT_OPTIONS = "ASYNC_SINGLE_SELECT_OPTIONS";
+  export const ASYNC_MULTI_SELECT_OPTIONS = "ASYNC_MULTI_SELECT_OPTIONS";
+}
