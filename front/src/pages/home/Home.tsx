@@ -40,7 +40,7 @@ function Home() {
   return (
     <div id="home-page" className="h-full overflow-y-auto flex flex-col w-full">
       <main className="flex flex-col gap-2">
-        <Carrossel imagens={IMAGES} />
+        {/* <Carrossel imagens={IMAGES} /> */}
         <Section
           titulo="Postagens"
           items={posts}

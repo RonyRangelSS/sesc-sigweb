@@ -7,7 +7,7 @@ export default function Footer() {
     <div
       className={twMerge(
         "sticky bottom-0 z-1000 flex w-full flex-row items-center",
-        "bg-primary justify-between px-8 py-4 shadow-t-md",
+        "bg-primary justify-around px-8 py-4 shadow-t-md",
       )}
     >
       <NavLink to="/">
@@ -16,10 +16,10 @@ export default function Footer() {
       <NavLink to="/mapa">
         <FaMap size={32} className="text-on-primary" />
       </NavLink>
-      <FaAlignJustify
+      {/* <FaAlignJustify
         size={32}
         className="text-on-primary hover:cursor-pointer"
-      />
+      /> */}
     </div>
   );
 }
