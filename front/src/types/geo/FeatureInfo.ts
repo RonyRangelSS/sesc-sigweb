@@ -10,7 +10,7 @@ export default interface FeatureInfo {
    */
   attributes: Record<
     string,
-    { type: AttributeType; metadata: LayerAttributesMetadata }
+    { type: AttributeType; metadata?: LayerAttributesMetadata; label: string }
   >;
   /**
    * Filters applied to the layer.

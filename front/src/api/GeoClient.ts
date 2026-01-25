@@ -4,6 +4,7 @@ import LayerInfo from "../types/geo/LayerInfo.ts";
 import { LayerMetadata } from "@/types/geo/metadata/LayerMetadata.ts";
 import setValue from "set-value";
 import * as R from "remeda";
+import { AttributeType } from "@/types/geo/AttributeType.ts";
 
 const GEO_URL = import.meta.env.VITE_GEOSERVER_URL;
 
@@ -56,6 +57,7 @@ type GetFeatureDetailsResponse = {
         maxOccurs: number;
         nillable: boolean;
         binding: string;
+        source?: string;
       }[];
     };
   };
@@ -67,7 +69,7 @@ type GetCoverageDetailsResponse = {
 
 export async function getLayers(workspace: string): Promise<LayerInfo[]> {
   const getLayersResponse = await fetch(
-    `${GEO_URL}/rest/workspaces/${workspace}/layers`
+    `${GEO_URL}/rest/workspaces/${workspace}/layers`,
   );
   const getLayersData = (await getLayersResponse.json()) as GetLayersResponse;
 
@@ -76,14 +78,14 @@ export async function getLayers(workspace: string): Promise<LayerInfo[]> {
       const layerInfo: Partial<LayerInfo> = {};
       await fillLayerInfo(workspace, layer.name, layerInfo);
       return layerInfo as LayerInfo;
-    })
+    }),
   );
 }
 
 async function fillLayerInfo(
   workspace: string,
   layerName: string,
-  layerInfo: Partial<LayerInfo>
+  layerInfo: Partial<LayerInfo>,
 ) {
   const injectionStrategies = [
     injectFeatureDetailsStrategy,
@@ -104,10 +106,10 @@ async function fillLayerInfo(
 async function injectFeatureDetailsStrategy(
   workspace: string,
   layer: string,
-  layerInfo: Partial<LayerInfo>
+  layerInfo: Partial<LayerInfo>,
 ): Promise<boolean> {
   const response = await fetch(
-    `${GEO_URL}/rest/workspaces/${workspace}/featuretypes/${layer}.json`
+    `${GEO_URL}/rest/workspaces/${workspace}/featuretypes/${layer}.json`,
   );
 
   if (!response.ok) return false;
@@ -116,7 +118,7 @@ async function injectFeatureDetailsStrategy(
     .featureType;
 
   const metadata: LayerMetadata = parseKeywordsToMetadata(
-    data.keywords?.string ?? []
+    data.keywords?.string ?? [],
   );
 
   layerInfo.owsURL = `${GEO_URL}/ows`;
@@ -133,10 +135,13 @@ async function injectFeatureDetailsStrategy(
       data.attributes.attribute.map((attribute) => [
         attribute.name,
         {
-          type: attribute.binding.split(".").pop()!,
+          type: attribute.binding.split(".").pop()! as AttributeType,
           metadata: metadata.attributes[attribute.name],
+          // TODO: find a way to give an attribute a label in geoserver
+          // without breaking filtering
+          label: attribute.name,
         },
-      ])
+      ]),
     ),
     filters: {},
   };
@@ -202,10 +207,10 @@ function parseKeywordsToMetadata(keywords: string[]): LayerMetadata {
 async function injectCoverageDetailsStrategy(
   workspace: string,
   layer: string,
-  layerInfo: Partial<LayerInfo>
+  layerInfo: Partial<LayerInfo>,
 ): Promise<boolean> {
   const response = await fetch(
-    `${GEO_URL}/rest/workspaces/${workspace}/coverages/${layer}.json`
+    `${GEO_URL}/rest/workspaces/${workspace}/coverages/${layer}.json`,
   );
 
   if (!response.ok) return false;

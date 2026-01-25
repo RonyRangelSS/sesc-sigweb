@@ -21,7 +21,7 @@ export const LayersInfoSiderBar = ({
     useShallow((state) => ({
       layersInfo: state.layersInfo,
       isFetching: state.isFetching,
-    }))
+    })),
   );
 
   const layersMap = featuresInfo.map(
@@ -29,7 +29,7 @@ export const LayersInfoSiderBar = ({
       [
         `${value.layerInfo.namespace}:${value.layerInfo.name}`,
         value.features,
-      ] as const
+      ] as const,
   );
 
   const tabs = layersMap.map(([title, _], i) => (
@@ -39,7 +39,7 @@ export const LayersInfoSiderBar = ({
       className={cn(
         "text-base bg-surface-container-darker px-2 py-1 rounded-2xl shadow-sm",
         "font-medium radix-state-active:bg-primary radix-state-active:text-on-primary",
-        "transition-all duration-300 cursor-pointer hover:scale-105"
+        "transition-all duration-300 cursor-pointer hover:scale-105",
       )}
     >
       {title}
@@ -53,13 +53,13 @@ export const LayersInfoSiderBar = ({
           key={feature.id}
           className={cn(
             "mb-2 max-h-64 overflow-y-auto rounded-lg border shadow-sm",
-            "bg-surface-container shadow-sm"
+            "bg-surface-container shadow-sm",
           )}
         >
           <header
             className={cn(
               "text-md text-on-primary font-medium sticky -top-px",
-              "px-2 py-1 bg-primary border-b-2 border-b-black"
+              "px-2 py-1 bg-primary border-b-2 border-b-black",
             )}
           >
             ID: {feature.id}
@@ -98,7 +98,7 @@ export const LayersInfoSiderBar = ({
             className={cn(
               "border-b-2 border-b-primary",
               "flex flex-row gap-2",
-              "p-2 overflow-x-auto"
+              "p-2 overflow-x-auto",
             )}
           >
             {tabs}

@@ -43,7 +43,7 @@ export const BooleanAttributeFilter = ({
 }: ActiveLayerAttributeFilterProps) => {
   const filter = useMemo(
     () => getFilter(attribute) as BooleanGeoFilter | undefined,
-    [attribute, getFilter]
+    [attribute, getFilter],
   );
 
   const onChange = useCallback(
@@ -54,7 +54,7 @@ export const BooleanAttributeFilter = ({
         addFilter(new BooleanGeoFilter({ layerId, attribute, value }));
       }
     },
-    [attribute, addFilter, removeFilter]
+    [attribute, addFilter, removeFilter],
   );
 
   return <BooleanField value={filter?.value} onChange={onChange} />;
@@ -70,7 +70,7 @@ export const IntegerAttributeFilter = ({
 }: ActiveLayerAttributeFilterProps) => {
   const filter = useMemo(
     () => getFilter(attribute) as IntervalGeoFilter<number> | undefined,
-    [attribute, getFilter]
+    [attribute, getFilter],
   );
 
   const rangeMin = useMemo(() => metadata.range?.minNumber, [metadata]);
@@ -92,11 +92,11 @@ export const IntegerAttributeFilter = ({
             attribute,
             min: value === null ? undefined : value,
             max,
-          })
+          }),
         );
       }
     },
-    [attribute, addFilter, removeFilter, layerId, max]
+    [attribute, addFilter, removeFilter, layerId, max],
   );
 
   const onChangeMax = useCallback(
@@ -110,11 +110,11 @@ export const IntegerAttributeFilter = ({
             attribute,
             min,
             max: value === null ? undefined : value,
-          })
+          }),
         );
       }
     },
-    [attribute, addFilter, removeFilter, layerId, min]
+    [attribute, addFilter, removeFilter, layerId, min],
   );
 
   return (
@@ -147,7 +147,7 @@ export const DecimalAttributeFilter = ({
 }: ActiveLayerAttributeFilterProps) => {
   const filter = useMemo(
     () => getFilter(attribute) as IntervalGeoFilter<number> | undefined,
-    [attribute, getFilter]
+    [attribute, getFilter],
   );
 
   const rangeMin = useMemo(() => metadata.range?.minNumber, [metadata]);
@@ -169,11 +169,11 @@ export const DecimalAttributeFilter = ({
             attribute,
             min: value === null ? undefined : value,
             max,
-          })
+          }),
         );
       }
     },
-    [attribute, addFilter, removeFilter, layerId, max]
+    [attribute, addFilter, removeFilter, layerId, max],
   );
 
   const onChangeMax = useCallback(
@@ -187,11 +187,11 @@ export const DecimalAttributeFilter = ({
             attribute,
             min,
             max: value === null ? undefined : value,
-          })
+          }),
         );
       }
     },
-    [attribute, addFilter, removeFilter, layerId, min]
+    [attribute, addFilter, removeFilter, layerId, min],
   );
 
   return (
@@ -220,7 +220,7 @@ export const TemporalAttributeFilter = ({
 }: ActiveLayerAttributeFilterProps) => {
   const filter = useMemo(
     () => getFilter(attribute) as IntervalGeoFilter<Date> | undefined,
-    [attribute, getFilter]
+    [attribute, getFilter],
   );
 
   const rangeMin = useMemo(() => metadata.range?.minDate, [metadata]);
@@ -246,11 +246,11 @@ export const TemporalAttributeFilter = ({
             attribute,
             min: range.from,
             max: range.to,
-          })
+          }),
         );
       }
     },
-    [attribute, addFilter, removeFilter, layerId]
+    [attribute, addFilter, removeFilter, layerId],
   );
 
   return (
@@ -272,7 +272,7 @@ export const FreeTextAttributeFilter = ({
 }: ActiveLayerAttributeFilterProps) => {
   const filter = useMemo(
     () => getFilter(attribute) as FreeTextGeoFilter | undefined,
-    [attribute, getFilter]
+    [attribute, getFilter],
   );
 
   const onChange = useCallback(
@@ -283,7 +283,7 @@ export const FreeTextAttributeFilter = ({
         addFilter(new FreeTextGeoFilter({ layerId, attribute, value }));
       }
     },
-    [attribute, addFilter, removeFilter]
+    [attribute, addFilter, removeFilter],
   );
 
   return <TextField value={filter?.value ?? undefined} onChange={onChange} />;
@@ -303,7 +303,7 @@ export const MultiSelectAttributeFilter = ({
         label: option,
         value: option,
       })),
-    [metadata.enum]
+    [metadata.enum],
   );
 
   const filter = getFilter(attribute) as MultiSelectFilter | undefined;
@@ -331,7 +331,7 @@ export const MultiSelectAttributeFilter = ({
 };
 
 export const ActiveLayerAttributeFilter = (
-  props: ActiveLayerAttributeFilterProps
+  props: ActiveLayerAttributeFilterProps,
 ) => {
   const { type, metadata } = props;
   if (isBooleanAttribute(type)) {

@@ -15,7 +15,7 @@ const baseClassNames = {
       "flex w-full bg-surface rounded-full! overflow-hidden",
       "border border-surface-container-darker min-h-0",
       state.isFocused && "border-primary",
-      "shadow-inner-md"
+      "shadow-inner-md",
     ),
   valueContainer: () => "px-2 py-0.5",
   input: () => "outline-none",
@@ -32,7 +32,7 @@ const baseClassNames = {
       "px-3 py-2 cursor-pointer",
       state.isSelected && "bg-primary text-on-primary",
       state.isFocused && !state.isSelected && "bg-surface-container-darker",
-      !state.isSelected && !state.isFocused && "text-on-surface-container"
+      !state.isSelected && !state.isFocused && "text-on-surface-container",
     ),
 };
 
@@ -185,7 +185,7 @@ const MultiSelect = <T,>({
     GroupBase<Option<T>>
   > = {
     ...baseClassNames,
-    valueContainer: () => "px-2 py-0.5 gap-1",
+    valueContainer: () => "px-2 py-0.5 gap-1 flex flex-wrap",
     multiValue: () => "bg-primary rounded text-on-primary",
     multiValueLabel: () => "text-on-primary px-2 py-1",
     multiValueRemove: () => "text-on-primary hover:bg-primary-darker rounded-r",
@@ -201,7 +201,7 @@ const MultiSelect = <T,>({
       onChange={(options, action) =>
         onChange?.(
           R.isNonNullish(options) ? options.map((option) => option.value) : [],
-          action
+          action,
         )
       }
       placeholder={placeholder ?? "Selecione..."}

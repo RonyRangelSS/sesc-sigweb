@@ -29,14 +29,15 @@ const ActiveLayerFeatureInfoContent = ({
   getFilter,
 }: ActiveLayerFeatureInfoContentProps) => {
   const attributes = R.entries(activeLayer.featureInfo.attributes).filter(
-    ([_, value]) => !isSpatialAttribute(value.type)
+    ([_, value]) =>
+      !isSpatialAttribute(value.type) && value.metadata?.hidden !== true,
   );
 
   return (
     <div className="flex flex-col gap-2">
       {attributes.map(([name, value], i) => (
         <div key={`${activeLayer.name}-${i}`} className="shadow-sm px-4 py-2">
-          <span className="font-semibold">{name}:</span> {value.type}
+          <span className="font-semibold">{value.label}:</span> {value.type}
           <ActiveLayerAttributeFilter
             layerId={getLayerId(activeLayer)}
             attribute={name}
@@ -89,21 +90,21 @@ export default function ActiveLayerAccordionItem({
     (filter: GeoFilter) => {
       ogAddFilter(activeLayer, filter.attribute, filter);
     },
-    [ogAddFilter, activeLayer]
+    [ogAddFilter, activeLayer],
   );
 
   const removeFilter = useCallback(
     (attribute: string) => {
       ogRemoveFilter(activeLayer, attribute);
     },
-    [ogRemoveFilter, activeLayer]
+    [ogRemoveFilter, activeLayer],
   );
 
   const getFilter = useCallback(
     (attribute: string) => {
       return ogGetFilter(activeLayer, attribute);
     },
-    [ogGetFilter, activeLayer]
+    [ogGetFilter, activeLayer],
   );
 
   /// Render ///
@@ -115,7 +116,7 @@ export default function ActiveLayerAccordionItem({
       className={cn(
         "cursor-pointer text-primary hover:scale-110 transition-all",
         "duration-300 ease-in-out",
-        "radix-state-open:rotate-180"
+        "radix-state-open:rotate-180",
       )}
     />
   ) : (
@@ -125,7 +126,7 @@ export default function ActiveLayerAccordionItem({
       className={cn(
         "cursor-pointer text-primary hover:scale-110 transition-all",
         "duration-300 ease-in-out",
-        "radix-state-open:rotate-180"
+        "radix-state-open:rotate-180",
       )}
     />
   );
@@ -134,7 +135,7 @@ export default function ActiveLayerAccordionItem({
     <div
       className={cn(
         "flex items-center justify-between gap-2 px-4 py-2 text-[1.2rem]",
-        "text-on-surface-container font-medium"
+        "text-on-surface-container font-medium",
       )}
     >
       <div className="flex items-center gap-2">
@@ -143,7 +144,7 @@ export default function ActiveLayerAccordionItem({
           <button
             className={cn(
               "cursor-pointer transition-all duration-300 ease-in-out",
-              "hover:scale-110 radix-state-open:rotate-180"
+              "hover:scale-110 radix-state-open:rotate-180",
             )}
           >
             <IoMdArrowDropdown size={24} className="text-primary" />
@@ -180,12 +181,12 @@ export default function ActiveLayerAccordionItem({
       classNames={{
         item: cn(
           "bg-surface-container border-b-2 border-primary",
-          "transition-colors duration-300 ease-in-out"
+          "transition-colors duration-300 ease-in-out",
         ),
         header: "shadow-sm",
         content: cn(
           "overflow-hidden",
-          "radix-state-open:animate-slideDown radix-state-closed:animate-slideUp"
+          "radix-state-open:animate-slideDown radix-state-closed:animate-slideUp",
         ),
       }}
     />
