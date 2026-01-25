@@ -5,6 +5,7 @@ import {
   LeafletMouseEvent,
   LeafletMouseEventHandlerFn,
   Map as LMap,
+  circleMarker,
 } from "leaflet";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useMap, GeoJSON, Popup } from "react-leaflet";
@@ -50,7 +51,7 @@ export default function BaseSearchHandler({
     }
 
     return featuresInfo.flatMap(
-      (fetchedFeatureInfo) => fetchedFeatureInfo.features
+      (fetchedFeatureInfo) => fetchedFeatureInfo.features,
     );
   }, [featuresInfo, featureStrategy]);
 
@@ -69,11 +70,22 @@ export default function BaseSearchHandler({
     featuresInfo,
     processedFeatures,
     setMarkerPosition,
-    fitBoundsOptions
+    fitBoundsOptions,
   );
   useCursorManagement(map, isFetching);
 
   /// Render ///
+  const pointToLayer = (_: Feature<Point>, latlng: LatLng) => {
+    return circleMarker(latlng, {
+      radius: 6,
+      fillColor: "#56ee04",
+      color: "#ffffff",
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.8,
+    });
+  };
+
   return (
     <>
       {featuresInfo && processedFeatures.length > 0 && (
@@ -84,6 +96,7 @@ export default function BaseSearchHandler({
           style={{
             color: "#56ee04",
           }}
+          pointToLayer={pointToLayer}
         />
       )}
       {markerPosition && (
@@ -106,7 +119,7 @@ function useMapClickHandler(
   map: LMap,
   handleClickRef: MutableRefObject<LeafletMouseEventHandlerFn | null>,
   onMapClick: (e: LeafletMouseEvent, map: LMap) => void | Promise<void>,
-  setMarkerPosition: (latlng: LatLng) => void
+  setMarkerPosition: (latlng: LatLng) => void,
 ) {
   useEffect(() => {
     const activateClickHandler = (activate: boolean) => {
@@ -158,7 +171,7 @@ function useFitBounds(
   featuresInfo?: FetchedFeatureInfo[],
   processedFeatures?: Feature[],
   setMarkerPosition?: (latlng: LatLng) => void,
-  options?: { updateMarkerFromPointFeature?: boolean }
+  options?: { updateMarkerFromPointFeature?: boolean },
 ) {
   useEffect(() => {
     if (
@@ -175,7 +188,7 @@ function useFitBounds(
       setMarkerPosition
     ) {
       const pointFeature = processedFeatures.find(
-        (feature) => feature.geometry.type === "Point"
+        (feature) => feature.geometry.type === "Point",
       );
       if (pointFeature) {
         setMarkerPosition({
