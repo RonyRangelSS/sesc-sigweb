@@ -47,7 +47,7 @@ export default function PostDetails() {
   return (
     <div
       className={cn(
-        "flex flex-col items-center bg-gray-50 p-2 overflow-y-auto flex-1"
+        "flex flex-col items-center bg-gray-50 p-2 overflow-y-auto flex-1",
       )}
     >
       <div className="mt-2 mb-4 flex self-start w-full max-w-2xl">
@@ -68,7 +68,7 @@ export default function PostDetails() {
           <h3
             className={cn(
               "w-full bg-linear-to-t from-black/80 to-transparent p-4",
-              "text-center text-2xl font-bold text-white rounded-b-2xl"
+              "text-center text-2xl font-bold text-white rounded-b-2xl",
             )}
           >
             {post?.titulo}
@@ -120,26 +120,28 @@ export default function PostDetails() {
         {post?.empreendedor && (
           <SectionCard title="Empreendedor(a)" content={post.empreendedor} />
         )}
-        <div className="bg-white rounded-xl shadow p-4 mb-2 flex flex-col gap-2">
-          {post?.horario && (
-            <div className="flex items-center gap-2">
-              <FaClock color="#2C3E50" size={21} />
-              <span>{post.horario}</span>
-            </div>
-          )}
-          {post?.contato && (
-            <div className="flex items-center gap-2">
-              <FaWhatsapp color="#2C3E50" size={21} />
-              <span>{post.contato}</span>
-            </div>
-          )}
-          {post?.local && post.local.lat && post.local.lng && (
-            <div className="flex items-center gap-2">
-              <Pointer lat={post.local.lat} lng={post.local.lng} />
-              <span>Ver no mapa</span>
-            </div>
-          )}
-        </div>
+        {(post?.horario || post?.contato || post?.local) && (
+          <div className="bg-white rounded-xl shadow p-4 mb-2 flex flex-col gap-2">
+            {post?.horario && (
+              <div className="flex items-center gap-2">
+                <FaClock color="#2C3E50" size={21} />
+                <span>{post.horario}</span>
+              </div>
+            )}
+            {post?.contato && (
+              <div className="flex items-center gap-2">
+                <FaWhatsapp color="#2C3E50" size={21} />
+                <span>{post.contato}</span>
+              </div>
+            )}
+            {post?.local && post.local.lat && post.local.lng && (
+              <div className="flex items-center gap-2">
+                <Pointer lat={post.local.lat} lng={post.local.lng} />
+                <span>Ver no mapa</span>
+              </div>
+            )}
+          </div>
+        )}
         {post?.imagem && post.imagem.length > 1 && (
           <div className="bg-white rounded-xl shadow p-4 mb-2">
             <h2 className="text-lg font-semibold mb-2 border-b pb-1">
