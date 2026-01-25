@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import { Enterprise } from "@/types/strapi/Enterprise";
 import { getEnterpriseImageUrl } from "@/utils/image-utils";
-import { getColorFromTipo } from "@/utils/tipo-utils";
+import { getColorFromString } from "@/utils/color-utils";
 import { cn } from "@/utils/style-utils";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -28,7 +28,7 @@ export default function LargeEnterpriseCard({
       className={cn(
         "relative overflow-hidden rounded-2xl border border-gray-300",
         "bg-white p-4 shadow-md transition-shadow duration-200",
-        "hover:shadow-lg cursor-pointer block"
+        "hover:shadow-lg cursor-pointer block",
       )}
     >
       <div className="relative h-48 w-full overflow-hidden rounded-t-2xl shadow mb-4">
@@ -51,9 +51,9 @@ export default function LargeEnterpriseCard({
       <span
         className={cn(
           "text-xs font-semibold mb-3 rounded-full px-2 py-1",
-          "block overflow-hidden whitespace-nowrap text-ellipsis w-fit max-w-full"
+          "block overflow-hidden whitespace-nowrap text-ellipsis w-fit max-w-full",
         )}
-        style={{ backgroundColor: getColorFromTipo(enterprise.tipo) }}
+        style={{ backgroundColor: getColorFromString(enterprise.tipo) }}
       >
         {enterprise.tipo}
       </span>
@@ -70,7 +70,7 @@ export function LargeEnterpriseCardSkeleton() {
     <div
       className={cn(
         "relative overflow-hidden rounded-2xl border border-gray-300",
-        "bg-white p-4 shadow-md"
+        "bg-white p-4 shadow-md",
       )}
     >
       <div className="relative h-48 w-full overflow-hidden rounded-t-2xl shadow mb-4">

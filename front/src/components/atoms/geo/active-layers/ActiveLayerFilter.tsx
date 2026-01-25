@@ -326,6 +326,7 @@ export const MultiSelectAttributeFilter = ({
       values={values}
       isClearable={true}
       onChange={onChange}
+      colorizeByLabel={true}
     />
   );
 };

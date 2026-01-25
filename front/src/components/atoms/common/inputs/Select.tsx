@@ -1,6 +1,12 @@
 import { SelectCacheKeys } from "@/constants/cache-keys/select-cache-keys";
+import { getColorFromString } from "@/utils/color-utils";
 import { useQuery } from "@tanstack/react-query";
-import RSelect, { ActionMeta, ClassNamesConfig, GroupBase } from "react-select";
+import RSelect, {
+  ActionMeta,
+  ClassNamesConfig,
+  GroupBase,
+  StylesConfig,
+} from "react-select";
 import * as R from "remeda";
 import { cn, mergeClassNamesConfig } from "@/utils/style-utils";
 
@@ -9,15 +15,15 @@ export type Option<T> = {
   value: T;
 };
 
-const baseClassNames = {
+const baseClassNames: ClassNamesConfig<any, any, any> = {
   control: (state: any) =>
     cn(
-      "flex w-full bg-surface rounded-full! overflow-hidden",
+      "flex w-full bg-surface rounded-3xl! overflow-hidden",
       "border border-surface-container-darker min-h-0",
       state.isFocused && "border-primary",
-      "shadow-inner-md",
+      "shadow-inner-md!",
     ),
-  valueContainer: () => "px-2 py-0.5",
+  valueContainer: () => "px-2 py-0.5 ",
   input: () => "outline-none",
   placeholder: () => "text-on-surface/60",
   indicatorsContainer: () => "pr-1",
@@ -160,6 +166,7 @@ export type MultiSelectProps<T> = {
   isDisabled?: boolean;
   isLoading?: boolean;
   isClearable?: boolean;
+  colorizeByLabel?: boolean;
   classNames?: ClassNamesConfig<Option<T>, true, GroupBase<Option<T>>>;
   menuPortalTarget?: HTMLElement | null;
 };
@@ -172,6 +179,7 @@ const MultiSelect = <T,>({
   isDisabled,
   isLoading,
   isClearable,
+  colorizeByLabel = false,
   classNames,
   menuPortalTarget,
 }: MultiSelectProps<T>) => {
@@ -185,13 +193,34 @@ const MultiSelect = <T,>({
     GroupBase<Option<T>>
   > = {
     ...baseClassNames,
-    valueContainer: () => "px-2 py-0.5 gap-1 flex flex-wrap",
-    multiValue: () => "bg-primary rounded text-on-primary",
-    multiValueLabel: () => "text-on-primary px-2 py-1",
-    multiValueRemove: () => "text-on-primary hover:bg-primary-darker rounded-r",
+    valueContainer: () => "px-2 py-0.5 gap-1",
+    multiValue: () => cn("rounded-lg!", !colorizeByLabel && "bg-primary!"),
+    multiValueLabel: () =>
+      cn("px-2 py-1", colorizeByLabel ? "text-on-surface" : "text-on-primary"),
+    multiValueRemove: () =>
+      cn(
+        "rounded-r",
+        colorizeByLabel ? "text-on-surface" : "text-on-primary",
+        colorizeByLabel ? "hover:bg-black/10" : "hover:bg-primary-darker",
+      ),
   };
 
   const mergedClassNames = mergeClassNamesConfig(defaultClassNames, classNames);
+
+  const baseStyles: StylesConfig<Option<T>, true> = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
+      pointerEvents: "auto" as const,
+    }),
+    multiValue: (base, state) => ({
+      ...base,
+      backgroundColor:
+        state.data && colorizeByLabel
+          ? getColorFromString(state.data.label)
+          : undefined,
+    }),
+  };
 
   return (
     <RSelect<Option<T>, true>
@@ -215,13 +244,7 @@ const MultiSelect = <T,>({
           ? document.body
           : null
       }
-      styles={{
-        menuPortal: (base) => ({
-          ...base,
-          zIndex: 9999,
-          pointerEvents: "auto",
-        }),
-      }}
+      styles={baseStyles}
       classNames={mergedClassNames}
     />
   );
@@ -243,6 +266,7 @@ export const AsyncMultiSelect = <T,>({
   placeholder,
   isDisabled,
   isClearable,
+  colorizeByLabel,
   classNames,
 }: AsyncMultiSelectProps<T>) => {
   const {
@@ -264,6 +288,7 @@ export const AsyncMultiSelect = <T,>({
       isDisabled={isDisabled || isLoading}
       isLoading={isLoading || isFetching}
       isClearable={isClearable}
+      colorizeByLabel={colorizeByLabel}
       classNames={classNames}
     />
   );

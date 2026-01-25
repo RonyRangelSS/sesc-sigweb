@@ -26,11 +26,11 @@ const Root = ({
   const positionClassNames: Record<"left" | "right", string> = {
     left: cn(
       "left-0 radix-state-open:animate-slideInLeft",
-      "radix-state-closed:animate-slideOutLeft"
+      "radix-state-closed:animate-slideOutLeft",
     ),
     right: cn(
       "right-0 radix-state-open:animate-slideInRight",
-      "radix-state-closed:animate-slideOutRight"
+      "radix-state-closed:animate-slideOutRight",
     ),
   };
 
@@ -44,17 +44,17 @@ const Root = ({
             "z-500 opacity-0 ease-in-out",
             "radix-state-open:animate-fadeIn radix-state-open:opacity-100",
             "radix-state-closed:animate-fadeOut radix-state-closed:opacity-0",
-            classNames?.overlay
+            classNames?.overlay,
           )}
         />
         <Dialog.Content
           aria-describedby={accessibility?.description}
           className={cn(
-            "absolute top-0 h-full w-[60vw] bg-surface-container shadow-lg sm:w-[40vw]",
+            "absolute top-0 h-full w-[85vw] sm:w-[60vw] bg-surface-container shadow-lg",
             "z-500 transition-transform duration-300 ease-in-out",
             "radix-state-open:translate-x-0",
             positionClassNames[position],
-            classNames?.content
+            classNames?.content,
           )}
         >
           {children}

@@ -23,7 +23,7 @@ export function cns<T extends Record<string, ClassNameValue>[]>(
       }
 
       cnMap.set(key, cn(currentValue, value));
-    })
+    }),
   );
 
   return R.fromKeys(Array.from(cnMap.keys()), (key) => cnMap.get(key)!) as {

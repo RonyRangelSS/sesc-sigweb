@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import { STRAPI_BASE_URL } from "../../api/Strapi";
 import { Enterprise } from "../../types/strapi/Enterprise";
 import { cn } from "@/utils/style-utils";
-import { getColorFromTipo } from "@/utils/tipo-utils";
+import { getColorFromString } from "@/utils/color-utils";
 
 export type SectionEnterpriseItemProps = {
   enterprise: Enterprise;
@@ -50,7 +50,7 @@ export default function SectionEnterpriseItem({
           "text-xs font-semibold my-1 rounded-full px-2 py-1",
           "block overflow-hidden whitespace-nowrap text-ellipsis w-fit max-w-full"
         )}
-        style={{ backgroundColor: getColorFromTipo(enterprise.tipo) }}
+        style={{ backgroundColor: getColorFromString(enterprise.tipo) }}
       >
         {enterprise.tipo}
       </span>
