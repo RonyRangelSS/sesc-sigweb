@@ -10,7 +10,7 @@ import {
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useMap, GeoJSON, Popup } from "react-leaflet";
 import { Marker as RMarker } from "react-leaflet/Marker";
-import { Feature, Point } from "geojson";
+import { Feature, MultiPoint, Point } from "geojson";
 import { getFetchedFeaturesId } from "@/components/atoms/geo/feature-info-display/featureSearchAux";
 import * as R from "remeda";
 import { FetchedFeatureInfo } from "@/types/geo/FetchedFeatureInfo";
@@ -22,9 +22,7 @@ export type BaseSearchHandlerProps = {
   isFetching: boolean;
   onMapClick: (e: LeafletMouseEvent, map: LMap) => void | Promise<void>;
   renderAdditionalLayers?: (markerPosition?: LatLng) => React.ReactNode;
-  fitBoundsOptions?: {
-    updateMarkerFromPointFeature?: boolean;
-  };
+  snapMarkerToPointFeature?: boolean;
   useMarkerPopup?: boolean;
 };
 
@@ -34,10 +32,12 @@ export default function BaseSearchHandler({
   isFetching,
   onMapClick,
   renderAdditionalLayers,
-  fitBoundsOptions,
+  snapMarkerToPointFeature = false,
   useMarkerPopup = false,
 }: BaseSearchHandlerProps) {
   const map = useMap();
+
+  console.log("Chamou");
 
   /// Feature Processing ///
   const processedFeatures = useMemo(() => {
@@ -64,14 +64,12 @@ export default function BaseSearchHandler({
 
   /// Effects ///
   useMapClickHandler(map, mapClickRef, onMapClick, setMarkerPosition);
-  useFitBounds(
-    map,
-    geoJsonLayerRef,
-    featuresInfo,
-    processedFeatures,
+  useMarkerHandler(
     setMarkerPosition,
-    fitBoundsOptions,
+    processedFeatures,
+    snapMarkerToPointFeature,
   );
+  useFitBounds(map, geoJsonLayerRef, processedFeatures);
   useCursorManagement(map, isFetching);
 
   /// Render ///
@@ -165,39 +163,42 @@ function useCursorManagement(map: LMap, isFetching: boolean) {
   }, [map, isFetching]);
 }
 
+function useMarkerHandler(
+  setMarkerPosition: (latlng: LatLng) => void,
+  processedFeatures?: Feature[],
+  snapMarkerToPointFeature?: boolean,
+) {
+  useEffect(() => {
+    if (snapMarkerToPointFeature && processedFeatures && setMarkerPosition) {
+      const pointFeature = processedFeatures.find(
+        (feature) => feature.geometry.type === "MultiPoint",
+      ) as Feature<MultiPoint>;
+
+      const coordinates = pointFeature?.geometry.coordinates[0];
+
+      if (pointFeature) {
+        setMarkerPosition({
+          lat: coordinates[1],
+          lng: coordinates[0],
+        } as LatLng);
+      }
+    }
+  }, [processedFeatures, setMarkerPosition, snapMarkerToPointFeature]);
+}
+
 function useFitBounds(
   map: LMap,
   geoJsonLayerRef: React.RefObject<LGeoJSON | null>,
-  featuresInfo?: FetchedFeatureInfo[],
   processedFeatures?: Feature[],
-  setMarkerPosition?: (latlng: LatLng) => void,
-  options?: { updateMarkerFromPointFeature?: boolean },
 ) {
   useEffect(() => {
     if (
       !geoJsonLayerRef.current ||
-      R.isNullish(featuresInfo) ||
-      featuresInfo.length === 0
+      R.isNullish(processedFeatures) ||
+      processedFeatures.length === 0
     )
       return;
 
-    // Optional: Update marker from point feature (PointSearchHandler specific)
-    if (
-      options?.updateMarkerFromPointFeature &&
-      processedFeatures &&
-      setMarkerPosition
-    ) {
-      const pointFeature = processedFeatures.find(
-        (feature) => feature.geometry.type === "Point",
-      );
-      if (pointFeature) {
-        setMarkerPosition({
-          lat: (pointFeature.geometry as Point).coordinates[1],
-          lng: (pointFeature.geometry as Point).coordinates[0],
-        } as LatLng);
-      }
-    }
-
     map.fitBounds(geoJsonLayerRef.current.getBounds());
-  }, [map, featuresInfo, processedFeatures, setMarkerPosition, options]);
+  }, [map, processedFeatures]);
 }
