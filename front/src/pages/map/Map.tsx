@@ -64,7 +64,7 @@ export default function MapPage() {
       setBufferRadius: state.setRadius,
       setBufferUnits: state.setUnits,
       toggleIsBufferActive: state.toggleIsActive,
-    }))
+    })),
   );
 
   const handleBufferActivation = () => {
@@ -178,7 +178,7 @@ export default function MapPage() {
       <MapContainer
         className="leaflet-control-layers h-full w-screen!"
         center={[lat, lng]}
-        zoom={12}
+        zoom={20}
         ref={map}
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />

@@ -5,7 +5,7 @@ services:
     build:
       context: ./strapi
       dockerfile: ./Dockerfile
-    image: strapi-custom:latest
+    image: luanvn4/hubsesc-strapi:latest
     restart: unless-stopped
     env_file: .env
     environment:
@@ -51,6 +51,7 @@ services:
       - "5432:5432"
     networks:
       - strapi
+
   front:
     container_name: front
     build:
@@ -80,6 +81,7 @@ services:
     build:
       context: ./geoserver
       dockerfile: ./Dockerfile
+    image: luanvn4/hubsesc-geoserver:latest
     depends_on: [geoserverDB]
     ports: ["8081:8080", "2222:2222"]
     environment:
@@ -89,6 +91,7 @@ services:
       CORS_ALLOWED_HEADERS: "*"
     volumes:
       - ./geoserver/docker-volumes/geoserver:/opt/geoserver_data
+
   geoserverDB:
     container_name: hubsesc-db
     image: postgis/postgis:16-3.5
