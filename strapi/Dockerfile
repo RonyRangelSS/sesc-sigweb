@@ -10,8 +10,6 @@ RUN npm install
 COPY . .
 
 RUN npm rebuild esbuild
-RUN npm run build
 
 EXPOSE 1337
-
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run build && npm run start"]
