@@ -1,6 +1,6 @@
-import { STRAPI_BASE_URL } from "@/api/Strapi";
-import { PostImage } from "@/types/strapi/Post";
-import { Image } from "@/types/strapi/Image";
+import { STRAPI_BASE_URL } from '@/api/Strapi';
+import { PostImage } from '@/types/strapi/Post';
+import { Image } from '@/types/strapi/Image';
 
 export function getMainImageUrl(
   image: PostImage | undefined

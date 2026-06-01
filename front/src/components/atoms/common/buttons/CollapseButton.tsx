@@ -1,15 +1,15 @@
-import { cn } from "@/utils/style-utils";
-import React, { Dispatch, forwardRef, SetStateAction, useState } from "react";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { cn } from '@/utils/style-utils';
+import React, { Dispatch, forwardRef, SetStateAction, useState } from 'react';
+import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 
 export type CollapseButtonProps = {
-  direction: "left" | "right" | "up" | "down";
+  direction: 'left' | 'right' | 'up' | 'down';
   defaultIsOpen?: boolean;
   onClick?: (
     setIsOpen: Dispatch<SetStateAction<boolean>>,
     e: React.MouseEvent<HTMLButtonElement>
   ) => void;
-  classNames: {
+  classNames?: {
     button?: string;
     icon?: string;
   };
@@ -21,11 +21,11 @@ export const CollapseButton = forwardRef<
 >(({ onClick, direction, defaultIsOpen = false, classNames }, ref) => {
   const [isOpen, setIsOpen] = useState(defaultIsOpen);
 
-  const iconRotations: Record<CollapseButtonProps["direction"], string> = {
-    left: isOpen ? "" : "rotate-180",
-    right: isOpen ? "rotate-180" : "",
-    up: isOpen ? "rotate-270" : "rotate-90",
-    down: isOpen ? "rotate-90" : "rotate-270",
+  const iconRotations: Record<CollapseButtonProps['direction'], string> = {
+    left: isOpen ? '' : 'rotate-180',
+    right: isOpen ? 'rotate-180' : '',
+    up: isOpen ? 'rotate-270' : 'rotate-90',
+    down: isOpen ? 'rotate-90' : 'rotate-270',
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,12 +33,16 @@ export const CollapseButton = forwardRef<
   };
 
   return (
-    <button ref={ref} onClick={handleClick} className={classNames.button}>
+    <button
+      ref={ref}
+      onClick={handleClick}
+      className={classNames?.button}
+    >
       <MdKeyboardDoubleArrowRight
         className={cn(
-          "transition-transform duration-75 ease-in-out cursor-pointer",
-          "hover:scale-110",
-          classNames.icon,
+          'cursor-pointer transition-transform duration-75 ease-in-out',
+          'hover:scale-110',
+          classNames?.icon,
           iconRotations[direction]
         )}
       />
